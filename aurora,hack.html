@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AURORA SHADE - Хакерская Анкета</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            color: #00ff00;
+            font-family: 'Orbitron', monospace;
+            overflow: hidden;
+            height: 100vh;
+            cursor: none;
+        }
+
+        .container {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            padding: 20px;
+        }
+
+        /* Огненная анимация */
+        .fire-frame {
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 2px solid #ff0000;
+            padding: 20px;
+            background: rgba(0,0,0,0.9);
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+            animation: fire-glow 2s infinite alternate;
+        }
+
+        @keyframes fire-glow {
+            0% { box-shadow: 0 0 20px #ff4400; }
+            100% { box-shadow: 0 0 40px #ff8800; }
+        }
+
+        .logo {
+            font-size: 12px;
+            line-height: 1.2;
+            white-space: pre;
+            opacity: 0;
+            animation: logo-reveal 3s 2s forwards;
+            color: #ffff00;
+        }
+
+        @keyframes logo-reveal {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        /* Матрица */
+        .matrix {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .matrix-char {
+            position: absolute;
+            color: #ff0000;
+            font-size: 14px;
+            font-weight: bold;
+            animation: fall 3s linear infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Анкета */
+        .profile {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            max-width: 90%;
+            text-align: left;
+            background: rgba(0,0,0,0.95);
+            padding: 30px;
+            border: 2px solid #00ff00;
+            border-radius: 10px;
+            box-shadow: 0 0 30px #00ff00;
+            display: none; /* теперь включаем через JS */
+        }
+
+        .profile h1 {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #00ff00;
+            animation: glitch 2s infinite;
+        }
+
+        @keyframes glitch {
+            0%, 100% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+        }
+
+        .profile-line {
+            margin: 8px 0;
+            opacity: 0;
+            animation: line-reveal 0.5s forwards;
+            font-size: 14px;
+        }
+
+        .profile-line:nth-child(1) { animation-delay: 0.5s; }
+        .profile-line:nth-child(2) { animation-delay: 1.0s; }
+        .profile-line:nth-child(3) { animation-delay: 1.5s; }
+        .profile-line:nth-child(4) { animation-delay: 2.0s; }
+        .profile-line:nth-child(5) { animation-delay: 2.5s; }
+        .profile-line:nth-child(6) { animation-delay: 3.0s; }
+        .profile-line:nth-child(7) { animation-delay: 3.5s; }
+        .profile-line:nth-child(8) { animation-delay: 4.0s; }
+        .profile-line:nth-child(9) { animation-delay: 4.5s; }
+        .profile-line:nth-child(10) { animation-delay: 5.0s; }
+        .profile-line:nth-child(11) { animation-delay: 5.5s; }
+
+        @keyframes line-reveal {
+            0% { opacity: 0; transform: translateX(-20px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        .vk-link {
+            display: inline-block;
+            background: linear-gradient(45deg, #ff0000, #00ff00);
+            color: #000;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-top: 20px;
+            box-shadow: 0 0 20px rgba(0,255,0,0.5);
+            transition: all 0.3s;
+        }
+
+        .vk-link:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255,0,0,0.8);
+        }
+
+        .status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            color: #ff0000;
+            font-size: 12px;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Логотип из огня -->
+        <div class="fire-frame">
+            <pre class="logo">..                     .''. 
+            c  '.          _,,    .'    '
+           ,     ,   ___  7###. .'       '
+          .       `-'   ''|####;#'. .##, .
+          ,               '####.##,######.
+         .                 '  ' '' ,####.
+        '                           '##'.
+       '                                .
+__,,--.--                                '
+      '                                  '
+  .--|-        &&                        -'-'''-.._
+     |         '&              &&         '
+    __,-                       '&        -'---.
+  ''  ,                                   ;
+       .             kk.                 -.-,_
+        -_           ''KK                ;
+</pre>
+            <div style="margin-top: 20px; font-size: 18px; color: #ffff00;">
+                ACCESS GRANTED
+            </div>
+        </div>
+
+        <!-- Красная матрица -->
+        <div class="matrix" id="matrix"></div>
+
+        <!-- Анкета -->
+        <div class="profile" id="profile">
+            <h1>🔥 АНКЕТА ВЗЛОМАНА 🔥</h1>
+            <div class="profile-line">Статус: Девушка</div>
+            <div class="profile-line">Цель игры: Ролевые игры, Общение IC, Обмен контентом</div>
+            <div class="profile-line">О себе:</div>
+            <div class="profile-line">• Играю во всякое на ПК, в том числе и ролевые.</div>
+            <div class="profile-line">• Мне подходят как парни, так и девушки, и всякие их модификации.</div>
+            <div class="profile-line">• Пассивный‑актив: в целом нижняя позиция, но инициативу тоже умею проявлять и вести.</div>
+            <div class="profile-line">• Играю только реализм, зарисовки и сюжеты, основанные и приближённые к реалу.</div>
+            <div class="profile-line">• В приоритете оформленные страницы для IC‑общения.</div>
+            <div class="profile-line">• Всё описанное относится к игровому образу и ролевой деятельности.</div>
+            <a href="https://vk.com/id1055435760" target="_blank" class="vk-link">
+                🔗 Написать в VK
+            </a>
+        </div>
+
+        <div class="status" id="status">СИСТЕМА ВЗЛОМАНА...</div>
+    </div>
+
+    <script>
+        // Создание падающей красной матрицы
+        function createMatrix() {
+            const matrix = document.getElementById('matrix');
+            const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()';
+
+            setInterval(() => {
+                const char = document.createElement('div');
+                char.className = 'matrix-char';
+                char.textContent = chars[Math.floor(Math.random() * chars.length)];
+                char.style.left = Math.random() * 100 + '%';
+                char.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                char.style.fontSize = (Math.random() * 10 + 10) + 'px';
+                matrix.appendChild(char);
+
+                setTimeout(() => char.remove(), 5000);
+            }, 100);
+        }
+
+        // Показать логотип → через 5 сек убрать и включить матрицу → через 4 сек показать анкету
+        setTimeout(() => {
+            document.querySelector('.fire-frame').style.display = 'none';
+            document.getElementById('matrix').style.display = 'block';
+            document.getElementById('matrix').style.opacity = '1';
+            createMatrix();
+        }, 5000);
+
+        setTimeout(() => {
+            const profile = document.getElementById('profile');
+            profile.style.display = 'block';
+            profile.style.opacity = '1';
+            document.getElementById('status').textContent = 'АНКЕТА АКТИВНА';
+        }, 9000);
+    </script>
+</body>
+</html>
