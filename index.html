@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aurora Shade — нежная анкета</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #2A1C22;
+            color: #FFEFF1;
+            font-family: 'Quicksand', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            position: relative;
+        }
+
+        /* Падающие лепестки */
+        .petals-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .petal {
+            position: absolute;
+            background: rgba(255, 220, 240, 0.5);
+            border-radius: 150% 0 150% 0;
+            animation: fall linear infinite;
+            transform: rotate(45deg);
+            box-shadow: 0 0 15px rgba(255, 200, 230, 0.3);
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            padding: 20px;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Приветственный экран с дымом */
+        .welcome-frame {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 20;
+            background: transparent;
+            overflow: hidden;
+            transition: opacity 3s ease-in-out;
+        }
+
+        .smoke-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .smoke-particle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(255, 220, 240, 0.8) 0%, rgba(200, 180, 210, 0.4) 40%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(20px);
+            animation: expandFade 8s infinite ease-out;
+            opacity: 0;
+        }
+
+        .smoke1 {
+            width: 200px;
+            height: 200px;
+            animation-delay: 0s;
+            background: radial-gradient(circle, rgba(255, 200, 230, 0.9) 0%, rgba(180, 150, 180, 0.5) 40%, transparent 70%);
+        }
+        .smoke2 {
+            width: 300px;
+            height: 300px;
+            animation-delay: 1.5s;
+            background: radial-gradient(circle, rgba(230, 210, 240, 0.8) 0%, rgba(160, 140, 170, 0.4) 40%, transparent 70%);
+        }
+        .smoke3 {
+            width: 400px;
+            height: 400px;
+            animation-delay: 3s;
+            background: radial-gradient(circle, rgba(240, 200, 220, 0.7) 0%, rgba(140, 120, 140, 0.3) 40%, transparent 70%);
+        }
+        .smoke4 {
+            width: 250px;
+            height: 250px;
+            animation-delay: 4.5s;
+            background: radial-gradient(circle, rgba(220, 180, 210, 0.8) 0%, rgba(170, 130, 160, 0.4) 40%, transparent 70%);
+        }
+        .smoke5 {
+            width: 350px;
+            height: 350px;
+            animation-delay: 6s;
+            background: radial-gradient(circle, rgba(210, 190, 230, 0.7) 0%, rgba(150, 130, 160, 0.3) 40%, transparent 70%);
+        }
+
+        @keyframes expandFade {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.2);
+            }
+            20% {
+                opacity: 0.6;
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+            50% {
+                opacity: 0.4;
+                transform: translate(-50%, -50%) scale(1.5);
+            }
+            80% {
+                opacity: 0.1;
+                transform: translate(-50%, -50%) scale(2.5);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(3);
+            }
+        }
+
+        .welcome-text {
+            position: relative;
+            z-index: 25;
+            font-size: 48px;
+            font-weight: 400;
+            color: #FFD9E5;
+            text-shadow: 0 0 30px rgba(255, 200, 230, 0.8);
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            animation: textAppear 2s ease-out forwards;
+        }
+
+        @keyframes textAppear {
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* Основная анкета */
+        .profile {
+            width: 90%;
+            max-width: 900px;
+            max-height: 85vh;
+            overflow-y: auto;
+            background: rgba(30, 20, 25, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 30px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+            opacity: 0;
+            transition: opacity 3s ease-in-out;
+            scrollbar-width: thin;
+            scrollbar-color: #B89AA8 #2A1C22;
+            z-index: 30;
+            position: relative;
+        }
+
+        .profile.visible {
+            opacity: 1;
+        }
+
+        .profile::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .profile::-webkit-scrollbar-track {
+            background: #2A1C22;
+            border-radius: 10px;
+        }
+
+        .profile::-webkit-scrollbar-thumb {
+            background: #B89AA8;
+            border-radius: 10px;
+        }
+
+        .profile h1 {
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #FFD9E5;
+            font-weight: 400;
+            letter-spacing: 3px;
+            text-shadow: 0 4px 15px rgba(255, 200, 230, 0.3);
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin: 25px 0;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #FFEFF1;
+            padding: 10px 20px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 30px;
+            flex: 1;
+            min-width: 100px;
+            backdrop-filter: blur(5px);
+        }
+
+        .nav-btn:hover {
+            background: rgba(180, 140, 160, 0.3);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 20px rgba(180, 140, 160, 0.4);
+        }
+
+        .nav-btn.active {
+            background: rgba(180, 140, 160, 0.5);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .section-content {
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: none;
+            animation: contentFade 0.5s;
+        }
+
+        .section-content.active {
+            display: block;
+        }
+
+        @keyframes contentFade {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-content h2 {
+            color: #FFD9E5;
+            margin-bottom: 15px;
+            font-size: 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            padding-bottom: 5px;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        .info-block {
+            padding: 10px;
+        }
+
+        .info-tag {
+            color: #FFD9E5;
+            font-weight: 500;
+            display: inline-block;
+            min-width: 100px;
+        }
+
+        .info-text {
+            margin: 10px 0;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px dashed rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+        }
+
+        .ic-explanation {
+            background: rgba(180, 140, 160, 0.1);
+            padding: 15px;
+            border-radius: 20px;
+            margin: 15px 0;
+            border-left: 3px solid rgba(180, 140, 160, 0.5);
+        }
+
+        .ic-explanation p {
+            margin: 5px 0;
+            line-height: 1.5;
+        }
+
+        .warning-sign {
+            color: #FFEFF1;
+            font-size: 13px;
+            margin-top: 10px;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            text-align: center;
+        }
+
+        .fetiş-name {
+            color: #FFEFF1;
+            margin-bottom: 5px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .fetiş-bar-container {
+            background: rgba(255, 255, 255, 0.05);
+            height: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .fetiş-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #B89AA8, #9A8AA5);
+            width: 0%;
+            transition: width 1s ease;
+            position: relative;
+            border-radius: 10px;
+        }
+
+        .fetiş-percent {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #FFFFFF;
+            font-size: 11px;
+            font-weight: bold;
+            z-index: 1;
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
+        }
+
+        .vanilla-note {
+            background: rgba(180, 140, 160, 0.15);
+            padding: 12px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            text-align: center;
+            color: #FFD9E5;
+        }
+
+        .vanilla-note span {
+            color: #FFD9E5;
+            font-weight: 600;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .gallery-item {
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.03);
+            transition: all 0.4s ease;
+            aspect-ratio: 1 / 1;
+            cursor: pointer;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px -8px rgba(0,0,0,0.5);
+        }
+
+        .gallery-item:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: scale(1.02);
+            box-shadow: 0 15px 30px -8px rgba(0,0,0,0.6);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: all 0.4s;
+        }
+
+        .gallery-item:hover img {
+            filter: brightness(1.05);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(30, 20, 25, 0.8);
+            backdrop-filter: blur(20px);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .modal.active {
+            display: flex;
+            animation: modalFade 0.3s;
+        }
+
+        @keyframes modalFade {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .modal img {
+            max-width: 90%;
+            max-height: 90%;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+            border-radius: 30px;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            color: #FFEFF1;
+            font-size: 40px;
+            cursor: pointer;
+            font-weight: 300;
+            z-index: 10001;
+            text-shadow: 0 0 15px rgba(255,255,255,0.3);
+        }
+
+        .modal-close:hover {
+            color: #FFD9E5;
+        }
+
+        .profile-line {
+            margin: 8px 0;
+            opacity: 0;
+            animation: slideIn 0.5s forwards;
+            font-size: 14px;
+        }
+
+        .profile-line:nth-child(2) { animation-delay: 0.2s; }
+        .profile-line:nth-child(3) { animation-delay: 0.4s; }
+        .profile-line:nth-child(4) { animation-delay: 0.6s; }
+        .profile-line:nth-child(5) { animation-delay: 0.8s; }
+        .profile-line:nth-child(6) { animation-delay: 1.0s; }
+        .profile-line:nth-child(7) { animation-delay: 1.2s; }
+        .profile-line:nth-child(8) { animation-delay: 1.4s; }
+
+        @keyframes slideIn {
+            0% { opacity: 0; transform: translateX(-10px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        .vk-link {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: #FFEFF1;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 40px;
+            font-weight: 500;
+            margin-top: 20px;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            font-size: 15px;
+            box-shadow: 0 10px 20px -8px rgba(0,0,0,0.4);
+        }
+
+        .vk-link:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.03);
+            box-shadow: 0 15px 25px -8px rgba(0,0,0,0.5);
+        }
+    </style>
+    <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
+</head>
+<body>
+    <div class="petals-container" id="petals"></div>
+
+    <div class="container">
+        <div class="welcome-frame" id="welcomeFrame">
+            <div class="smoke-container">
+                <div class="smoke-particle smoke1"></div>
+                <div class="smoke-particle smoke2"></div>
+                <div class="smoke-particle smoke3"></div>
+                <div class="smoke-particle smoke4"></div>
+                <div class="smoke-particle smoke5"></div>
+            </div>
+            <div class="welcome-text">AURORA SHADE</div>
+        </div>
+
+        <div class="profile" id="profile">
+            <h1>⋆｡°✩ AURORA SHADE ✩°｡⋆</h1>
+            
+            <div id="main-info">
+                <div class="profile-line">🌸 Статус: Девушка</div>
+                <div class="profile-line">🌸 Цель игры: Ролевые игры, Общение IC, Обмен контентом</div>
+                <div class="profile-line">🌸 О себе:</div>
+                <div class="profile-line">• Играю во всякое на ПК, в том числе и ролевые.</div>
+                <div class="profile-line">• Мне подходят как парни, так и девушки, и всякие их модификации.</div>
+                <div class="profile-line">• Пассивный‑актив: в целом нижняя позиция, но инициативу тоже умею проявлять и вести.</div>
+                <div class="profile-line">• Играю только реализм, зарисовки и сюжеты, основанные и приближённые к реалу.</div>
+                <div class="profile-line">• В приоритете оформленные страницы для IC‑общения.</div>
+                <div class="profile-line">• Всё описанное относится к игровому образу и ролевой деятельности.</div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="nav-btn" id="infoBtn">📁 инфо</button>
+                <button class="nav-btn" id="fetishesBtn">🌸 фетиши</button>
+                <button class="nav-btn" id="imagesBtn">🎀 образы</button>
+            </div>
+
+            <div id="info-section" class="section-content">
+                <h2>⚡ информация</h2>
+                <div class="info-block">
+                    <div class="info-text">
+                        <span class="info-tag">🌸 [статус]:</span> Девушка, 18+<br>
+                        <span class="info-tag">🌸 [ориентация]:</span> Бисексуал<br>
+                        <span class="info-tag">🌸 [стиль]:</span> Реализм
+                    </div>
+                    
+                    <div class="info-text">
+                        <span class="info-tag">🎀 [важно]:</span> Терпеть не люблю логические ошибки в тексте и хамство в первых сообщениях.
+                    </div>
+
+                    <div class="ic-explanation">
+                        <p>🎀 <strong>что такое IC-общение?</strong></p>
+                        <p>IC (In Character) — это общение от лица персонажа, в рамках ролевой игры. Мы не говорим о реальных делах, а проживаем истории наших героев. Это как совместное написание книги или фильма, где у каждого своя роль.</p>
+                        <p>Я ищу партнёров для таких историй — уютных, тёплых, эмоциональных. Если тебе близко такое творчество — нам по пути ✨</p>
+                    </div>
+                    
+                    <div class="warning-sign">
+                        🎀 строгое предупреждение 🎀<br>
+                        Сообщения с пустых или неоформленных страниц игнорирую без объяснений.
+                    </div>
+                </div>
+            </div>
+
+            <div id="fetishes-section" class="section-content">
+                <h2>🌸 рейтинг фетишей</h2>
+                
+                <div class="vanilla-note">
+                    <span>💮 по своей природе я ваниль</span> — этот список лишь то, что может дополнить или разнообразить нежные, тёплые отношения
+                </div>
+                
+                <div class="fetiş-rating" id="fetish-container"></div>
+            </div>
+
+            <div id="images-section" class="section-content">
+                <h2>🎀 галерея образов</h2>
+                <div class="gallery-grid" id="galleryGrid"></div>
+                <p style="color: #B89AA8; font-size: 11px; text-align: center; margin-top: 15px;">
+                    ⋆ нажми на фото, чтобы рассмотреть ближе ⋆
+                </p>
+            </div>
+
+            <a href="https://vk.com/id1055435760" target="_blank" class="vk-link">
+                ⋆ написать в VK ⋆
+            </a>
+        </div>
+    </div>
+
+    <div class="modal" id="imageModal">
+        <span class="modal-close" id="modalClose">&times;</span>
+        <img id="modalImage" src="" alt="">
+    </div>
+
+    <script>
+        if (window.vkBridge) {
+            vkBridge.send('VKWebAppInit');
+        }
+
+        function createPetals() {
+            const container = document.getElementById('petals');
+            const petalCount = 30;
+
+            for (let i = 0; i < petalCount; i++) {
+                const petal = document.createElement('div');
+                petal.className = 'petal';
+                
+                const size = Math.random() * 20 + 10;
+                petal.style.width = size + 'px';
+                petal.style.height = size * 0.6 + 'px';
+                
+                petal.style.left = Math.random() * 100 + '%';
+                petal.style.animationDuration = Math.random() * 5 + 5 + 's';
+                petal.style.animationDelay = Math.random() * 5 + 's';
+                petal.style.opacity = Math.random() * 0.4 + 0.3;
+                
+                container.appendChild(petal);
+            }
+        }
+
+        createPetals();
+
+        const fetishData = [
+            { name: "🌸 ОРАЛЬНЫЙ СЕКС", min: 90, max: 100 },
+            { name: "🌸 АНАЛЬНЫЙ СЕКС", min: 95, max: 100 },
+            { name: "🌸 ГРУППОВОЙ СЕКС", min: 80, max: 100 },
+            { name: "🌸 СЛЮНИ", min: 50, max: 60 },
+            { name: "🌸 ИНТЕРЕСНЫЕ МЕСТА", min: 50, max: 70 },
+            { name: "🌸 РАЗНИЦА В ВОЗРАСТЕ И РАЗМЕРАХ", min: 70, max: 80 },
+            { name: "🌸 БОЛЬШИЕ ЧЛЕНЫ", min: 70, max: 80 },
+            { name: "🌸 ФЕМСЛЕШ", min: 40, max: 50 },
+            { name: "🌸 ФУТЫ", min: 50, max: 60 },
+            { name: "🌸 РИСК БЫТЬ ОБНАРУЖЕННЫМИ", min: 70, max: 80 }
+        ];
+
+        function renderFetishes() {
+            const container = document.getElementById('fetish-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            fetishData.forEach((fetish, index) => {
+                const item = document.createElement('div');
+                item.className = 'fetiş-item';
+
+                const nameDiv = document.createElement('div');
+                nameDiv.className = 'fetiş-name';
+                nameDiv.textContent = fetish.name;
+
+                const barContainer = document.createElement('div');
+                barContainer.className = 'fetiş-bar-container';
+
+                const bar = document.createElement('div');
+                bar.className = 'fetiş-bar';
+                bar.id = `fetish-bar-${index}`;
+                bar.style.width = '0%';
+
+                const percentSpan = document.createElement('span');
+                percentSpan.className = 'fetiş-percent';
+                percentSpan.id = `fetish-percent-${index}`;
+                percentSpan.textContent = '0%';
+
+                barContainer.appendChild(bar);
+                barContainer.appendChild(percentSpan);
+
+                item.appendChild(nameDiv);
+                item.appendChild(barContainer);
+                container.appendChild(item);
+            });
+
+            setTimeout(updateFetishBars, 1000);
+        }
+
+        function updateFetishBars() {
+            fetishData.forEach((fetish, index) => {
+                const bar = document.getElementById(`fetish-bar-${index}`);
+                const percentSpan = document.getElementById(`fetish-percent-${index}`);
+                if (bar && percentSpan) {
+                    const newPercent = Math.floor(Math.random() * (fetish.max - fetish.min + 1)) + fetish.min;
+                    bar.style.width = newPercent + '%';
+                    percentSpan.textContent = newPercent + '%';
+                }
+            });
+        }
+
+        const imagesData = [
+            { url: "https://sun9-59.userapi.com/s/v1/ig2/DT91rSRpaQkhGrCzGKUc_d2XNhhfmNgG8OVRjvyW-UcWYCm4Klt1we-zyB5-lgoTnyiKmGfaWUyIMBCbImw52Cr6.jpg?quality=95&as=32x43,48x64,72x96,108x144,160x213,240x320,360x480,480x640,540x720,640x853,720x960,900x1200&from=bu&cs=900x0" },
+            { url: "https://sun9-60.userapi.com/s/v1/ig2/Cs5VyJ97s3NdgR0XfGr-ReBuxTbS0stYql0s2QUz2tWWpB8FeG8AL04_8WDfcNaGlJQp44J2e2MoNaUDZz-tfNhS.jpg?quality=95&as=32x43,48x64,72x96,108x144,160x213,240x320,360x480,480x640,540x720,640x853,720x960,736x981&from=bu&cs=736x0" },
+            { url: "https://sun9-72.userapi.com/s/v1/ig2/f0hR3RnxOusEaq5QcV9_WKrEsrNH4wWVYPJBZHEJ0R0taIUJfKQUXkodRJFz2TJ5T0ZrSljo2r_p-9KrsAUc5tO8.jpg?quality=95&as=32x43,48x64,72x96,108x144,160x213,240x320,360x480,480x640,540x720,640x853,720x960,736x981&from=bu&cs=736x0" },
+            { url: "https://sun9-36.userapi.com/s/v1/ig2/-mfpjk_4RoMMikoHjQvg3pv-ol8Rk4t6Iosf_KmWbYaztmdSSEI5OFTPtfvVIfvJm_IiUfaloiaG0p3FYxEd84CZ.jpg?quality=95&as=32x40,48x60,72x90,108x135,160x200,240x300,360x450,480x600,540x675,640x800,720x900,1080x1350&from=bu&cs=1080x0" },
+            { url: "https://sun9-86.userapi.com/s/v1/ig2/AlKO-obl3ZZw4p8UNZSRkpWqpBIcoZNJ7PuW000HXqGqHekBWTQ5LYNCxupXpkjOo12TSCwM5UBURbpi--vr100k.jpg?quality=95&as=32x58,48x87,72x131,108x197,160x292,240x437,360x656,480x875,540x984,640x1166,659x1201&from=bu&cs=659x0" },
+            { url: "https://sun9-73.userapi.com/s/v1/ig2/0PfsAIchSPjqNOGYZj05yJueXreYx6-DYV-XdTiztlPynd7MSL9sNFkMSMmorXXA_OQ990goDJkK93_kFt49lh5E.jpg?quality=95&as=32x28,48x42,72x63,108x94,160x140,240x210,360x314,480x419,540x472,640x559,720x629,1080x943,1200x1048&from=bu&cs=1200x0" },
+            { url: "https://sun9-20.userapi.com/s/v1/ig2/zOLCr3QXwRx1F5O35p-9MwpUv3HdQrjOOlNlne_k-6aa4FGYrRO-n19eoIWn7jFzOaYiAik0oCWWH3qtEBDhI39A.jpg?quality=95&as=32x43,48x64,72x96,108x144,160x213,240x320,360x480,480x640,540x720,640x853,720x960,900x1200&from=bu&cs=900x0" },
+            { url: "https://sun9-62.userapi.com/s/v1/ig2/cFTjQNqruj-PlHCaIE0DKIt-jAHWx7OEJ_eafoCx-2qGzGd-iSKRftA_wiKtuHDXmwVHdq5Ob8mnp6XLJdIht0W8.jpg?quality=95&as=32x43,48x64,72x96,108x144,160x213,240x320,360x480,480x640,540x720,640x853,720x960,900x1200&from=bu&cs=900x0" },
+            { url: "https://sun9-47.userapi.com/s/v1/ig2/Uyp6K7jZgy9h98huUTdwBDTGZxxAQBBPlpq1vXs4OokT79hZAHcVwZ_mH38TSYqrqOx9nQiwzT7wNhWGixi-eRsA.jpg?quality=95&as=32x42,48x64,72x96,108x143,160x212,240x319,360x478,480x637,540x717,640x850,720x956,735x976&from=bu&cs=735x0" }
+        ];
+
+        function renderGallery() {
+            const galleryGrid = document.getElementById('galleryGrid');
+            if (!galleryGrid) return;
+            galleryGrid.innerHTML = '';
+
+            imagesData.forEach((image, index) => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                item.onclick = () => openModal(index);
+
+                const img = document.createElement('img');
+                img.src = image.url;
+                img.alt = `Образ ${index + 1}`;
+                img.onerror = function() { 
+                    this.src = 'https://via.placeholder.com/300x300/2A1C22/FFEFF1?text=🌸';
+                };
+                
+                item.appendChild(img);
+                galleryGrid.appendChild(item);
+            });
+        }
+
+        let currentModalIndex = 0;
+
+        window.openModal = function(index) {
+            currentModalIndex = index;
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            if (modal && modalImg) {
+                modalImg.src = imagesData[index].url;
+                modal.classList.add('active');
+            }
+        };
+
+        function closeModal() {
+            document.getElementById('imageModal').classList.remove('active');
+        }
+
+        document.getElementById('modalClose').onclick = closeModal;
+        document.getElementById('imageModal').onclick = function(e) {
+            if (e.target === this) closeModal();
+        };
+
+        function showSection(section, clickedBtn) {
+            document.getElementById('info-section').classList.remove('active');
+            document.getElementById('fetishes-section').classList.remove('active');
+            document.getElementById('images-section').classList.remove('active');
+            
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            clickedBtn.classList.add('active');
+            
+            if (section === 'info') {
+                document.getElementById('info-section').classList.add('active');
+            } else if (section === 'fetishes') {
+                document.getElementById('fetishes-section').classList.add('active');
+                renderFetishes();
+            } else if (section === 'images') {
+                document.getElementById('images-section').classList.add('active');
+                renderGallery();
+            }
+        }
+
+        document.getElementById('infoBtn').onclick = function(e) { showSection('info', this); };
+        document.getElementById('fetishesBtn').onclick = function(e) { showSection('fetishes', this); };
+        document.getElementById('imagesBtn').onclick = function(e) { showSection('images', this); };
+
+        setTimeout(() => {
+            document.getElementById('welcomeFrame').style.opacity = '0';
+            document.getElementById('profile').classList.add('visible');
+            
+            document.getElementById('info-section').classList.add('active');
+            document.getElementById('infoBtn').classList.add('active');
+        }, 3000);
+
+        setTimeout(() => {
+            document.getElementById('welcomeFrame').style.display = 'none';
+        }, 6000);
+
+        setInterval(updateFetishBars, 3000);
+    </script>
+</body>
+</html>
